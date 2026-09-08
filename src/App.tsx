@@ -1,54 +1,37 @@
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import VisualArrayEditor, {type ArrayItem} from "./components/visualArray"
-import './App.css'
+import ConfigEditor, { defaultGlobalConfig, type ConfigurationSchema} from "./components/visualArray"
+import ModelView from "./components/modelView"
 
-function App() {
-  const [count, setCount] = useState(0)
-  const [jsonResult, setJsonResult] = useState<ArrayItem[]>([]);
+const savedDat = localStorage.getItem('anim-dat') || JSON.stringify(defaultGlobalConfig)
+const startingJSON = JSON.parse(savedDat)
+console.log(savedDat)
+console.log(startingJSON)
 
-  const handleDataChange = (updatedArray: ArrayItem[]): void => {
-    setJsonResult(updatedArray);
+export const primaryScroll='overflow-y-auto scrollbar-thin scrollbar-track-primary-900 scrollbar-thumb-primary-400'
+
+export default function App() {
+  // const [jsonResult, setJsonResult] = useState<ArrayItem[]>([]);
+  const [output, setOutput] = useState<ConfigurationSchema>(startingJSON);
+
+  const handleDataChange = (updatedArray: ConfigurationSchema): void => {
+    setOutput(updatedArray);
+    localStorage.setItem("anim-dat",JSON.stringify(updatedArray))
   };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <VisualArrayEditor onChange={handleDataChange} />
-
+    <div className='flex bg-primary-800 text-primary-200 gap-2 h-screen'>
+    <section id="input" className={`w-[50%]`}>
+      <ModelView config={output}/>
+      {/* <div className="shrink-0 h-[300vh] bg-primary-700 p-2">
+      </div> */}
+    </section>
+    <section id="input" className={`w-[50%] flex flex-col gap-4 border-l-2 border-primary-500 pl-8 ${primaryScroll}`}>
+      <ConfigEditor initialConfig={startingJSON} onChange={handleDataChange} />
       <h3>Output JSON Payload:</h3>
-      <pre style={{ background: '#1e293b', color: '#f8fafc', padding: '12px', borderRadius: '6px' }}>
-        {JSON.stringify(jsonResult, null, 2)}
+      <pre className='w-full rounded-[5rem] p-12 bg-primary-900'>
+        <code>{JSON.stringify(output, null, 2)}</code>
       </pre>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      </section>
+    </div>
   )
 }
-
-export default App
