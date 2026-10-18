@@ -41,7 +41,7 @@ function ProductPlaceholder() {
 }
 
 function ProductModel() {
-    const { scene } = useGLTF('/models/3dalign.glb')
+    const { scene } = useGLTF('/3d-anim-maker'+'/models/3dalign.glb')
     return <primitive object={scene} scale={1} />
 }
 
