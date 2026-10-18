@@ -13,4 +13,5 @@ export default defineConfig({
     outDir: 'docs', 
     emptyOutDir: true, 
   },
+  base: '/3d-anim-maker/'
 })
