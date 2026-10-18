@@ -4,8 +4,8 @@ import ModelView from "./components/modelView"
 
 const savedDat = localStorage.getItem('anim-dat') || JSON.stringify(defaultGlobalConfig)
 const startingJSON = JSON.parse(savedDat)
-console.log(savedDat)
-console.log(startingJSON)
+// console.log(savedDat)
+// console.log(startingJSON)
 
 export const primaryScroll='overflow-y-auto scrollbar-thin scrollbar-track-primary-900 scrollbar-thumb-primary-400'
 
@@ -20,7 +20,7 @@ export default function App() {
 
   return (
     <div className='flex bg-primary-800 text-primary-200 gap-2 h-screen'>
-    <section id="input" className={`w-[50%]`}>
+    <section id="display" className={`w-[50%]`}>
       <ModelView config={output}/>
       {/* <div className="shrink-0 h-[300vh] bg-primary-700 p-2">
       </div> */}

@@ -1,11 +1,11 @@
 import { type ConfigurationSchema, type GlobalConfig, type PhaseConfig } from './visualArray'
 import { Component, Suspense, useEffect, useRef, type ReactNode, type RefObject } from 'react'
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
 import { Environment, Float, useGLTF, Resize } from '@react-three/drei'
 import * as THREE from 'three'
 import Lenis from 'lenis'
 import { primaryScroll } from '../App'
-import { base } from 'motion/react-client'
+// import { base } from 'motion/react-client'
 
 interface Props {
     config: ConfigurationSchema
@@ -59,8 +59,6 @@ class ModelErrorBoundary extends Component<ModelErrorBoundaryProps, ModelErrorBo
 
 function RotatingProduct({ progress, config }: ProgressProps) {
     const group = useRef<THREE.Group>(null!)
-    const { viewport } = useThree()
-    const isMobile = viewport.width < (config.global.minviewportwidth ?? 4)
     const defPos = [config.global.x,config.global.y,config.global.z]
     const defRot = [THREE.MathUtils.degToRad(config.global.xr),THREE.MathUtils.degToRad(config.global.yr),THREE.MathUtils.degToRad(config.global.zr)]
     const defScale = convertScale(config.global)
@@ -72,11 +70,11 @@ function RotatingProduct({ progress, config }: ProgressProps) {
         const p = progress.current // 0 to 1
 
         // const phase = THREE.MathUtils.clamp((p-start)/ duration, 0, 1)
-        const phase1 = THREE.MathUtils.clamp(p / 0.3, 0, 1)
-        const phase2 = THREE.MathUtils.clamp((p - 0.3) / 0.3, 0, 1)
-        const phase3 = THREE.MathUtils.clamp((p - 0.6) / 0.3, 0, 1)
+        // const phase1 = THREE.MathUtils.clamp(p / 0.3, 0, 1)
+        // const phase2 = THREE.MathUtils.clamp((p - 0.3) / 0.3, 0, 1)
+        // const phase3 = THREE.MathUtils.clamp((p - 0.6) / 0.3, 0, 1)
 
-        const phaseAmt = config.global.phases.length
+        // const phaseAmt = config.global.phases.length
         const lastPhase = config.global.phases.at(-1) || {start:0.9,length:0.1}
         const lastP = THREE.MathUtils.clamp((p - lastPhase.start) / lastPhase.length,0,1)
         let sums = {
@@ -99,7 +97,7 @@ function RotatingProduct({ progress, config }: ProgressProps) {
         // console.log('----')
         for (const phase of config.global.phases){ 
             const pP = THREE.MathUtils.clamp((p - phase.start) / phase.length,0,1)
-            const scale = convertScale(phase)
+            // const scale = convertScale(phase)
             // const scaleStart = isMobile ? viewport.width / 4*scale : viewport.width / 2
             // const scaleEnd = isMobile ? viewport.width / 4*scale : viewport.width / 2.27
             sums.rot.x += THREE.MathUtils.lerp(THREE.MathUtils.degToRad(phase.xr) * pP,0,lastP)
